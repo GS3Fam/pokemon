@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm" id="contents">
+            </div>
+            <button type="button" class="btn btn-primary" id="add">Add</button>
+        </div>
+    </div>
+    <script>
+        window.$ = window.JQuery = require('jquery');
+
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        ipcRenderer.on('pokemon:view-delete', function(event, pokemon){
+            // pokemon.forEach(element => {
+            //     $('#contents').append("Name : "+element._doc.name+"<br>Nature : "+element._doc.nature+"<br>Type"+element._doc.type);  
+            // });
+            console.log(pokemon);
+        });
+    </script>
+</body>
+</html>

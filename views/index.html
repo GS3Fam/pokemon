@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
+    <!-- <script src="main.js"></script> -->
+</head>
+<body>
+    <table id="pokemon_list" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Pokemon</th>
+                <th>Nature</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Pokemon</th>
+                <th>Nature</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </tfoot>
+    </table>
+    <div id="pokemon"></div>
+</body>
+    <script>
+        // window.$ = window.JQuery = require('jquery');
+
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        window.$ = window.JQuery = require('jquery');
+        window.dt = require('datatables.net')(window, $);
+        window.buttons = require('datatables.net-buttons')(window, $);
+        window.$('#pokemon_list').DataTable();
+        
+        var table = $('#pokemon_list').DataTable();
+        //list pokemon
+        $(document).ready(function(){
+            $(document).on('click','.btn-edit',function(e) {
+                console.log($(this).attr('data-id'));
+            });
+            $(document).on('click','.btn-delete',function(e) {
+                var id = $(this).attr('data-id');
+                ipcRenderer.send('pokemon:view-delete', id);
+            });
+        });
+        
+        ipcRenderer.send('pokemon:list', 'ping1');
+
+        ipcRenderer.on('pokemon:list', function(event, pokemons){
+            pokemons.forEach(element => {
+                // console.log(element);
+                var buttons = '<button type="button" id="btnEdit" class="btn-edit btn btn-sm btn-primary" data-id="'+element._doc.id+'">Edit</button> <button type="button" class="btn-delete btn btn-sm btn-danger" data-id="'+element._doc.id+'">Delete</button>';
+                table.row.add( [
+                    element._doc.name,
+                    element._doc.nature,
+                    element._doc.type,
+                    buttons
+                ] ).draw( false );
+            });
+        });
+
+        //add pokemon
+        ipcRenderer.on('pokemon:add', function(event, pokemon){
+            var buttons = '<button type="button" class="btn-edit btn btn-sm btn-primary" data-id="'+pokemon[0]+'">Edit</button> <button type="button" class="btn-delete btn btn-sm btn-danger" data-id="'+pokemon[0]+'">Delete</button>';
+            table.row.add( [
+                pokemon[1],
+                pokemon[2],
+                pokemon[3],
+                buttons
+            ] ).draw( false );
+            // $('#pokemon').append('<span class="row justify-content-md-center align-items-center" ondblclick="removeList(this)">'+pokemon[0]+'</span>')
+        });
+        // $(document).ready(function() {
+        //     $('#example').DataTable();
+        // });
+    </script>
+</html>

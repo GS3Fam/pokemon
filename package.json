@@ -1,0 +1,22 @@
+{
+  "name": "electron3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Jairo Sanchez",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^3.0.11"
+  },
+  "dependencies": {
+    "datatables.net": "^1.10.19",
+    "datatables.net-bs4": "^1.10.19",
+    "datatables.net-buttons": "^1.5.4",
+    "datatables.net-buttons-bs4": "^1.5.4",
+    "jquery": "^3.3.1",
+    "mongoose": "^5.3.15"
+  }
+}
